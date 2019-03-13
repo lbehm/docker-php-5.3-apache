@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       librecode0 \
       libmysqlclient-dev \
       libsqlite3-0 \
+      libfreetype6 \
       libxml2 \
     && apt-get clean \
     && rm -r /var/lib/apt/lists/*
@@ -43,7 +44,7 @@ RUN mkdir -p $PHP_INI_DIR/conf.d
 ENV GPG_KEYS 0B96609E270F565C13292B24C13C70B87267B52D 0A95E9A026542D53835E3F3A7DEC4E69FC9C83D7 0E604491
 RUN set -xe \
   && for key in $GPG_KEYS; do \
-    gpg --keyserver pgp.mit.edu --recv-keys "$key"; \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
   done
 
 # compile openssl, otherwise --with-openssl won't work
@@ -72,6 +73,8 @@ RUN buildDeps=" \
                 libssl-dev \
                 libxml2-dev \
                 libpng-dev \
+                libjpeg62-turbo-dev \
+                libfreetype6-dev \
                 xz-utils \
       " \
       && set -x \
@@ -80,6 +83,8 @@ RUN buildDeps=" \
       && curl -SL "http://php.net/get/php-$PHP_VERSION.tar.xz.asc/from/this/mirror" -o php.tar.xz.asc \
       && gpg --verify php.tar.xz.asc \
       && mkdir -p /usr/src/php \
+      && mkdir /usr/include/freetype2/freetype \
+      && ln -s /usr/include/freetype2/freetype.h /usr/include/freetype2/freetype/freetype.h \
       && tar -xof php.tar.xz -C /usr/src/php --strip-components=1 \
       && rm php.tar.xz* \
       && cd /usr/src/php \
@@ -97,6 +102,7 @@ RUN buildDeps=" \
             --with-openssl=/usr/local/ssl \
             --enable-soap \
             --with-png \
+            --with-freetype-dir=/usr/include/freetype2 \
             --with-gd \
             --with-readline \
             --with-recode \
