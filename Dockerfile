@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libmysqlclient-dev \
       libsqlite3-0 \
       libfreetype6 \
+      libjpeg62-turbo \
       libxml2 \
     && apt-get clean \
     && rm -r /var/lib/apt/lists/*
@@ -101,7 +102,7 @@ RUN buildDeps=" \
             --with-curl \
             --with-openssl=/usr/local/ssl \
             --enable-soap \
-            --with-png \
+            --with-jpeg-dir=/usr/lib \
             --with-freetype-dir=/usr/include/freetype2 \
             --with-gd \
             --with-readline \
