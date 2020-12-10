@@ -76,6 +76,9 @@ RUN buildDeps=" \
                 libpng-dev \
                 libjpeg62-turbo-dev \
                 libfreetype6-dev \
+                libaspell-dev \
+                libpspell-dev \
+                aspell \
                 xz-utils \
       " \
       && set -x \
@@ -96,6 +99,7 @@ RUN buildDeps=" \
             --enable-ftp \
             --enable-mbstring \
             --enable-mysqlnd \
+            --enable-zip \
             --with-mysql \
             --with-mysqli \
             --with-pdo-mysql \
@@ -104,6 +108,7 @@ RUN buildDeps=" \
             --enable-soap \
             --with-jpeg-dir=/usr/lib \
             --with-freetype-dir=/usr/include/freetype2 \
+            --with-pspell \
             --with-gd \
             --with-readline \
             --with-recode \
